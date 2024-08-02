@@ -1,42 +1,31 @@
 package matrixprocessor
 
+import utils.Utils.getMatrixFromInput
+import utils.Utils.printMatrix
 import java.util.Scanner
 
 class MatrixAddition {
     private val sc = Scanner(System.`in`)
     private lateinit var firstMatrix: List<List<Int>>
     private lateinit var secondMatrix: List<List<Int>>
+    private lateinit var additionMatrix: List<List<Int>>
 
     fun initializeMatrices() {
-        var height = sc.nextInt()
-        var width = sc.nextInt()
-        firstMatrix = initializeMatrix(height, width)
-        height = sc.nextInt()
-        width = sc.nextInt()
-        secondMatrix = initializeMatrix(height, width)
+        firstMatrix = getMatrixFromInput(sc)
+        secondMatrix = getMatrixFromInput(sc)
     }
 
-    private fun initializeMatrix(height: Int, width: Int): List<List<Int>> {
-        val matrix = MutableList(height) { MutableList(width) { 0 } }
-        for (y in 0..<height) {
-            for (x in 0..<width) {
-                matrix[y][x] = sc.nextInt()
-            }
+    fun performAddition() {
+        if (firstMatrix.size == secondMatrix.size && firstMatrix.first().size == secondMatrix.first().size) {
+            additionMatrix = firstMatrix plus secondMatrix
         }
-        return matrix
     }
 
-    fun getMatricesAddition(): String {
-        if (firstMatrix.size != secondMatrix.size || firstMatrix.first().size != secondMatrix.first().size) {
-            return "ERROR"
-        }
-        val additionMatrix = firstMatrix plus secondMatrix
-        StringBuilder().apply {
-            additionMatrix.forEach {
-                append(it.joinToString(" "))
-                append("\n")
-            }
-            return this.toString()
+    fun printMatrix() {
+        if (this::additionMatrix.isInitialized) {
+            additionMatrix.printMatrix()
+        } else {
+            println("ERROR")
         }
     }
 }
@@ -56,5 +45,6 @@ infix fun List<List<Int>>.plus(other: List<List<Int>>): List<List<Int>> {
 fun main() {
     val addition = MatrixAddition()
     addition.initializeMatrices()
-    println(addition.getMatricesAddition())
+    addition.performAddition()
+    addition.printMatrix()
 }
