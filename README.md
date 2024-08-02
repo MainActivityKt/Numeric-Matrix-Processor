@@ -33,3 +33,25 @@ Input:
     7 6 8 9 9
     9 2 12 18 9
     2 3 4 5 7
+
+
+## Stage 2/6: Multiplication by number:
+In this stage, the multiplication of a matrix by a constant is implemented.
+
+Stage implementation: [MatrixMultiplier.kt](src/matrixprocessor/MatrixMultiplier.kt)
+
+Example:
+
+Input:
+
+    3 3
+    1 2 3
+    4 5 6
+    7 8 9
+    3
+
+Output:
+    
+    3 6 9
+    12 15 18
+    21 24 27
