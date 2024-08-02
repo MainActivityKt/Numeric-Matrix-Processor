@@ -18,8 +18,8 @@ class MatrixAddition {
 
     private fun initializeMatrix(height: Int, width: Int): List<List<Int>> {
         val matrix = MutableList(height) { MutableList(width) { 0 } }
-        for(y in 0 until height) {
-            for(x in 0 until width) {
+        for (y in 0..<height) {
+            for (x in 0..<width) {
                 matrix[y][x] = sc.nextInt()
             }
         }
@@ -47,7 +47,6 @@ infix fun List<List<Int>>.plus(other: List<List<Int>>): List<List<Int>> {
     val list = MutableList(height) { MutableList(width) { 0 } }
     for (y in 0..<height) {
         for (x in 0..<width) {
-
             list[y][x] = this[y][x] + other[y][x]
         }
     }
