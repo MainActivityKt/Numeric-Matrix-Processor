@@ -30,30 +30,30 @@ class MatricesCalculator {
             sc, "Enter size of second matrix: ", "Enter second matrix:"
         )
         if (matrix.numOfRows == additionMatrix.numOfRows && matrix.numOfColumns == additionMatrix.numOfColumns) {
-            matrix.add(additionMatrix)
-            printResult(matrix)
+            val result = matrix.add(additionMatrix)
+            printResult(result)
         } else {
             println("The operation cannot be performed.")
         }
     }
 
     private fun multiply(byConstant: Boolean = false) {
+        val result: Matrix
         if (byConstant) {
             val matrix = getMatrixFromInput(sc, "Enter size of matrix:", "Enter matrix:")
             val multiplier = getInput("Enter constant: ")
-            matrix.multiply(multiplier)
-            printResult(matrix)
+            result = matrix.multiply(multiplier)
 
         } else {
             val matrix = getMatrixFromInput(
                 sc, "Enter size of first matrix: ","Enter first matrix:"
             )
-            val multiplyMatrix = getMatrixFromInput(
+            val multiplierMatrix = getMatrixFromInput(
                 sc, "Enter size of second matrix: ", "Enter second matrix:"
             )
-            matrix.multiply(multiplyMatrix)
-            printResult(matrix)
+            result = matrix.multiply(multiplierMatrix)
         }
+        printResult(result)
     }
 
     private fun printMenu() {

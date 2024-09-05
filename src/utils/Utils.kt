@@ -2,17 +2,22 @@ package utils
 
 import java.util.Scanner
 
-class Matrix(width: Int, height: Int, sc: Scanner = Scanner(System.`in`)) {
-    private var matrix: List<MutableList<Double>> = MutableList(height) { MutableList(width) { 0.0 } }
-    val numOfRows = height
-    val numOfColumns = width
+class Matrix {
+    private lateinit var matrix: List<List<Double>>
 
-    init {
-        for (y in 0..<height) {
-            for (x in 0..<width) {
-                matrix[y][x] = sc.nextDouble()
-            }
-        }
+    var numOfRows: Int = 0
+    var numOfColumns: Int = 0
+
+    constructor(width: Int, height: Int, sc: Scanner = Scanner(System.`in`)) {
+        numOfRows = height
+        numOfColumns = width
+        matrix = List(numOfRows) { List(numOfColumns) { sc.nextDouble() } }
+    }
+
+    constructor(matrix: List<List<Double>>) {
+        this.matrix = matrix
+        numOfRows = matrix.size
+        numOfColumns = matrix.first().size
     }
 
     private val columns: List<List<Double>>
@@ -26,23 +31,25 @@ class Matrix(width: Int, height: Int, sc: Scanner = Scanner(System.`in`)) {
             return list
         }
 
-    fun add(otherMatrix: Matrix) {
-        for (y in 0..<numOfColumns) {
-            for (x in 0..<numOfRows) {
-                matrix[y][x] = matrix[y][x] + otherMatrix.get(y, x)
+    fun add(otherMatrix: Matrix): Matrix {
+        return Matrix(buildList<List<Double>> {
+            matrix.forEachIndexed { x, row ->
+                add(buildList {
+                    row.forEachIndexed { y, value -> add(value + otherMatrix.get(x, y)) }
+                })
             }
-        }
+        })
     }
 
-    fun multiply(multiplier: Double) {
-        matrix.forEach { row ->
-            row.forEachIndexed { index, value ->
-                row[index] = value * multiplier
+    fun multiply(multiplier: Double): Matrix {
+        return Matrix(buildList {
+            matrix.forEach { row ->
+                add(row.map { it * multiplier })
             }
-        }
+        })
     }
 
-    fun multiply(otherMatrix: Matrix) {
+    fun multiply(otherMatrix: Matrix): Matrix {
         val result = List(numOfRows) { MutableList(otherMatrix.numOfColumns) { 0.0 } }
         matrix.forEachIndexed { x, row ->
             otherMatrix.columns.forEachIndexed { y, column ->
@@ -50,7 +57,7 @@ class Matrix(width: Int, height: Int, sc: Scanner = Scanner(System.`in`)) {
                 result[x][y] = sum
             }
         }
-        matrix = result
+        return Matrix(result)
     }
 
     override fun toString(): String {
@@ -69,7 +76,7 @@ class Matrix(width: Int, height: Int, sc: Scanner = Scanner(System.`in`)) {
 
 object Utils {
     enum class Operation(val value: String) {
-        ADD_MATRICES("Add matrices"), MULTIPLY_MATRIX_BY_CONSTANT("Multiply matrix by a constant") ,
+        ADD_MATRICES("Add matrices"), MULTIPLY_MATRIX_BY_CONSTANT("Multiply matrix by a constant"),
         MULTIPLY_MATRICES("Multiply matrices"), EXIT("Exit")
     }
 
@@ -79,7 +86,12 @@ object Utils {
         Operation.MULTIPLY_MATRICES to 3,
         Operation.EXIT to 0,
     )
-    fun getMatrixFromInput(scanner: Scanner, getDetailsMessage: String? = null, getMatrixMessage: String? = null): Matrix {
+
+    fun getMatrixFromInput(
+        scanner: Scanner,
+        getDetailsMessage: String? = null,
+        getMatrixMessage: String? = null,
+    ): Matrix {
         getDetailsMessage?.let { print(it) }
         val matrixHeight = scanner.nextInt()
         val matrixWidth = scanner.nextInt()
