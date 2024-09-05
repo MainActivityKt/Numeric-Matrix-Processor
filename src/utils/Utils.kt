@@ -3,7 +3,7 @@ package utils
 import java.util.Scanner
 
 class Matrix {
-    private lateinit var matrix: List<List<Double>>
+    private val matrix: List<List<Double>>
 
     var numOfRows: Int = 0
     var numOfColumns: Int = 0
@@ -60,6 +60,26 @@ class Matrix {
         return Matrix(result)
     }
 
+    fun getTranspose(transpose: Utils.Operation): Matrix {
+        return when(transpose) {
+            Utils.Operation.MAIN_DIAGONAL -> {
+                Matrix(columns)
+            }
+
+            Utils.Operation.SIDE_DIAGONAL -> {
+                Matrix(columns.reversed().map { it.reversed() })
+            }
+
+            Utils.Operation.HORIZONTAL_LINE -> {
+                Matrix(matrix.reversed())
+            }
+
+            else -> {
+                Matrix(matrix.map { it.reversed() })
+            }
+        }
+    }
+
     override fun toString(): String {
         val printInInt = matrix.sumOf { it.sum() } % 1.0 == 0.0
         return buildString {
@@ -77,15 +97,11 @@ class Matrix {
 object Utils {
     enum class Operation(val value: String) {
         ADD_MATRICES("Add matrices"), MULTIPLY_MATRIX_BY_CONSTANT("Multiply matrix by a constant"),
-        MULTIPLY_MATRICES("Multiply matrices"), EXIT("Exit")
+        MULTIPLY_MATRICES("Multiply matrices"), TRANSPOSE("Transpose matrix"),
+        MAIN_DIAGONAL("Main diagonal"), SIDE_DIAGONAL("Side diagonal"),
+        VERTICAL_LINE("Vertical line"), HORIZONTAL_LINE("Horizontal line"), EXIT("Exit")
     }
 
-    val menuItems = mapOf(
-        Operation.ADD_MATRICES to 1,
-        Operation.MULTIPLY_MATRIX_BY_CONSTANT to 2,
-        Operation.MULTIPLY_MATRICES to 3,
-        Operation.EXIT to 0,
-    )
 
     fun getMatrixFromInput(
         scanner: Scanner,

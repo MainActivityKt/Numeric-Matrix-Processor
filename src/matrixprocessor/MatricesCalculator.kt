@@ -1,14 +1,23 @@
 package matrixprocessor
 
 import utils.Matrix
-import utils.Utils.menuItems
+import utils.Utils.Operation
 import utils.Utils.Operation.*
 import utils.Utils.getMatrixFromInput
 import java.util.Scanner
 
-class MatricesCalculator {
+open class MatricesCalculator {
     private val sc = Scanner(System.`in`)
-    fun performCalculation() {
+
+
+    open val menuItems = mapOf(
+        Operation.ADD_MATRICES to 1,
+        Operation.MULTIPLY_MATRIX_BY_CONSTANT to 2,
+        Operation.MULTIPLY_MATRICES to 3,
+        Operation.EXIT to 0,
+    )
+
+    open fun performCalculation() {
         printMenu()
         val input = getInput().toInt()
         when(input) {
@@ -22,7 +31,7 @@ class MatricesCalculator {
        }
     }
 
-    private fun addMatrices() {
+    protected fun addMatrices() {
         val matrix = getMatrixFromInput(
             sc, "Enter size of first matrix: ","Enter first matrix:"
         )
@@ -37,7 +46,7 @@ class MatricesCalculator {
         }
     }
 
-    private fun multiply(byConstant: Boolean = false) {
+    protected fun multiply(byConstant: Boolean = false) {
         val result: Matrix
         if (byConstant) {
             val matrix = getMatrixFromInput(sc, "Enter size of matrix:", "Enter matrix:")
@@ -56,16 +65,16 @@ class MatricesCalculator {
         printResult(result)
     }
 
-    private fun printMenu() {
-        menuItems.forEach { (k, v) -> println("$v. ${k.value}") }
+    protected fun printMenu(menu: Map<Operation, Int> = menuItems) {
+        menu.forEach { (k, v) -> println("$v. ${k.value}") }
     }
 
-    private fun printResult(matrix: Matrix) {
+    protected fun printResult(matrix: Matrix) {
         println("The result is:")
-        println(matrix)
+        print(matrix)
     }
 
-    private fun getInput(message: String = "Your choice: "): Double {
+    protected fun getInput(message: String = "Your choice: "): Double {
         print(message)
         return sc.nextDouble()
     }
