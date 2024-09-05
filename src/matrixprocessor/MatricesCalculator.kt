@@ -69,9 +69,14 @@ open class MatricesCalculator {
         menu.forEach { (k, v) -> println("$v. ${k.value}") }
     }
 
-    protected fun printResult(matrix: Matrix) {
+    protected fun printResult(result: Matrix) {
         println("The result is:")
-        print(matrix)
+        print(result)
+    }
+
+    protected fun printResult(result: Double) {
+        println("The result is:")
+        print(if (result % 1.0 == 0.0) result.toInt() else result)
     }
 
     protected fun getInput(message: String = "Your choice: "): Double {

@@ -4,7 +4,7 @@ import utils.Utils.Operation.*
 import utils.Utils.getMatrixFromInput
 import java.util.Scanner
 
-open class TransposeCalculator: MatricesCalculator() {
+class DeterminantCalculator: TransposeCalculator() {
     private val sc = Scanner(System.`in`)
 
     override val menuItems = mapOf(
@@ -12,14 +12,8 @@ open class TransposeCalculator: MatricesCalculator() {
         MULTIPLY_MATRIX_BY_CONSTANT to 2,
         MULTIPLY_MATRICES to 3,
         TRANSPOSE to 4,
+        CALCULATE_DETERMINANT to 5,
         EXIT to 0,
-    )
-
-    private val transposeOptions = mapOf(
-        MAIN_DIAGONAL to 1,
-        SIDE_DIAGONAL to 2,
-        VERTICAL_LINE to 3,
-        HORIZONTAL_LINE to 4
     )
 
     override fun performCalculation() {
@@ -30,6 +24,7 @@ open class TransposeCalculator: MatricesCalculator() {
             menuItems[MULTIPLY_MATRICES] -> multiply()
             menuItems[MULTIPLY_MATRIX_BY_CONSTANT] -> multiply(byConstant = true)
             menuItems[TRANSPOSE] -> transpose()
+            menuItems[CALCULATE_DETERMINANT] -> calculateDeterminant()
         }
         println()
         if (input != menuItems[EXIT]) {
@@ -37,21 +32,13 @@ open class TransposeCalculator: MatricesCalculator() {
         }
     }
 
-    protected fun transpose() {
-        printMenu(transposeOptions)
-        val input = getInput().toInt()
+    private fun calculateDeterminant() {
         val matrix = getMatrixFromInput(sc, "Enter matrix size: ", "Enter matrix: ")
-        val result = when(input) {
-            transposeOptions[MAIN_DIAGONAL] -> matrix.getTranspose(MAIN_DIAGONAL)
-            transposeOptions[SIDE_DIAGONAL] -> matrix.getTranspose(SIDE_DIAGONAL)
-            transposeOptions[HORIZONTAL_LINE] -> matrix.getTranspose(HORIZONTAL_LINE)
-            transposeOptions[VERTICAL_LINE] -> matrix.getTranspose(VERTICAL_LINE)
-           else -> matrix
-        }
+        val result = matrix.calculateDeterminant()
         printResult(result)
     }
 }
 
 fun main() {
-    TransposeCalculator().performCalculation()
+    DeterminantCalculator().performCalculation()
 }
